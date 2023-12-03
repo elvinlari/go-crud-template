@@ -3,14 +3,17 @@ package servid
 import (
 	"flag"
 	"fmt"
+	"net/http"
+	"os"
+
 	"github.com/go-chi/chi"
 	"github.com/jmoiron/sqlx"
 	"github.com/kgoralski/go-crud-template/internal/banks"
 	"github.com/kgoralski/go-crud-template/internal/platform/db"
+	"github.com/kgoralski/go-crud-template/internal/todo"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"net/http"
-	"os"
+	// httpSwagger "github.com/swaggo/http-swagger"
 )
 
 const (
@@ -56,6 +59,14 @@ func NewApp() *App {
 	router := chi.NewRouter()
 	database := setupDB(viper.GetString("database.URL"))
 	banksRouter := banks.NewRouter(router, database)
+
+	// router.Mount("/swagger", httpSwagger.WrapHandler)
+
+	todoStore := todo.NewTodoStore(database)
+	todoController := todo.NewTodoController(todoStore)
+	todo.AddTodoRoutes(router, todoController)
+	showRoutes(router)
+
 	server := &App{
 		r:          router,
 		db:         database,

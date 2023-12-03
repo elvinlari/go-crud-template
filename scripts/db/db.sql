@@ -12,3 +12,10 @@ CREATE TABLE bank_db.banks (
   name varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS bank_db.todos;
+CREATE TABLE bank_db.todos (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
